@@ -400,14 +400,19 @@ JOIN LOCATION ON(LOCATION_ID = LOCAL_CODE);
 -- 6. 급여등급별 최소급여(MIN_SAL)를 초과해서 받는 직원들의
 -- 사원명, 직급명,급여, 연봉(보너스포함)을 조회하시오.
 -- (연봉에 보너스포인트를 적용하시오.)
-SELECT EMP_NAME, JOB_NAME, SALARY, 
+
+-- NATURAL JOIN을 다중조인에서 사용할 때는 SELECT 절에 
+-- NATURAL JOIN에서 사용되었을 연결고리 컬럼을 반드시 작성해야함
+SELECT EMP_NAME, JOB_NAME, SALARY, JOB_CODE,
 	SALARY * ( 1 + NVL(BONUS, 0) ) * 12 연봉
-FROM EMPLOYEE
-NATURAL JOIN JOB
+FROM EMPLOYEE 
 JOIN SAL_GRADE USING (SAL_LEVEL)
+NATURAL JOIN JOB
 WHERE SALARY > MIN_SAL;
 
-
+SELECT * FROM JOB;
+SELECT * FROM SAL_GRADE;
+SELECT * FROM EMPLOYEE;
 
 -- 7.한국(KO)과 일본(JP)에 근무하는 직원들의
 -- 사원명, 부서명, 지역명, 국가명을 조회하시오.
