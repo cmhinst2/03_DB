@@ -23,7 +23,7 @@ GRANT RESOURCE, CONNECT TO todolist;
 -- RESOURCE : 테이블이나 인덱스 같은 DB 객체를 생성할 권한
 -- CONNECT : DB에 연결하고 로그인할 수 있는 권한
 
-ALTER USER todolist DEFAULT TABLESPACE SYSTEM QUOTA UNLIMITED ON SYSTEM;
+ALTER USER kh_cmh DEFAULT TABLESPACE SYSTEM QUOTA UNLIMITED ON SYSTEM;
 -- 객체가 생성될 수 있는 공간 할당량 무제한 지정
 
 
