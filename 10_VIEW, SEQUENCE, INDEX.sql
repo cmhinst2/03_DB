@@ -294,6 +294,101 @@ MAXVALUE 200;
 
 
 -- 200 까지 증가 시켜서 변경 확인
+SELECT SEQ_TEST_NO.NEXTVAL FROM DUAL;
+
+--------------------------------------------------------------------
+
+-- VIEW, SEQUENCE 삭제
+
+-- V_DCOPY2 VIEW 삭제
+DROP VIEW V_DCOPY2;
+
+-- SEQ_TEST_NO SEQUENCE 삭제
+DROP SEQUENCE SEQ_TEST_NO;
+
+--------------------------------------------------------------------
+
+
+
+/* INDEX(색인)
+ * - SQL 구문 중 SELECT 처리 속도를 향상 시키기 위해 
+ *   컬럼에 대하여 생성하는 객체
+ * 
+ * - 인덱스 내부 구조는 B* 트리(B-star tree) 형식으로 되어있음.
+ * 
+ *  
+ * 
+ * ** INDEX의 장점 **
+ * - 이진 트리 형식으로 구성되어 자동 정렬 및 검색 속도 증가.
+ * 
+ * - 조회 시 테이블의 전체 내용을 확인하며 조회하는 것이 아닌
+ *   인덱스가 지정된 컬럼만을 이용해서 조회하기 때문에
+ *   시스템의 부하가 낮아짐.
+ * 
+ * 
+ * ** 인덱스의 단점 **
+ * - 데이터 변경(INSERT,UPDATE,DELETE) 작업 시 
+ * 	 이진 트리 구조에 변형이 일어남
+ *    -> DML 작업이 빈번한 경우 시스템 부하가 늘어 성능이 저하됨.
+ * 
+ * - 인덱스도 하나의 객체이다 보니 별도 저장공간이 필요(메모리 소비)
+ * 
+ * - 인덱스 생성 시간이 필요함.
+ * 
+ * 
+ * 
+ *  [작성법]
+ *  CREATE [UNIQUE] INDEX 인덱스명
+ *  ON 테이블명 (컬럼명[, 컬럼명 | 함수명]);
+ * 
+ *  DROP INDEX 인덱스명;
+ * 
+ * 
+ *  ** 인덱스가 자동 생성되는 경우 **
+ *  -> PK 또는 UNIQUE 제약조건이 설정된 컬럼에 대해 
+ *    UNIQUE INDEX가 자동 생성된다. 
+ * */
+
+
+/* 인덱스 성능 확인용 테이블 생성 */
+CREATE TABLE TB_IDX_TEST (
+	TEST_NO NUMBER PRIMARY KEY, -- 자동으로 UNIQUE INDEX 생성됨
+	TEST_ID VARCHAR2(20) NOT NULL
+);
+
+
+-- TB_IDX_TEST 테이블에 
+-- 샘플 데이터 100만개 삽입 (PL/SQL 사용)
+-- 조건문(IF/CASE) , 반복문(LOOP, WHILE), 변수 선언
+BEGIN
+	FOR I IN 1..1000000 -- I 는 1부터 100만까지 반복
+	LOOP
+		INSERT INTO TB_IDX_TEST
+		VALUES(I, 'TEST' || I);
+	END LOOP;
+	
+	COMMIT; -- 모든 삽입 작업을 커밋
+END;
+
+
+SELECT COUNT(*) FROM TB_IDX_TEST; -- 100만개 행이 삽입됨을 확인
+
+/* 인덱스를 사용해서 검색하는 방법 
+ * -> WHERE 절에 INDEX가 지정된 컬럼을 언급하기
+ * */
+
+/* 인덱스 X */
+-- TEST_ID 가 'TEST500000' 인 행 조회하기
+SELECT * FROM TB_IDX_TEST
+WHERE TEST_ID = 'TEST500000'; -- 0.017 ~ 0.027s
+
+/* 인덱스 O */
+-- TEST_NO 가 500000인 행 조회하기
+SELECT * FROM TB_IDX_TEST
+WHERE TEST_NO = 500000; -- 0.001s
+-- 보통 10~30배 차이
+
+
 
 
 
