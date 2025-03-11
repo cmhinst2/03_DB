@@ -121,13 +121,13 @@ WHERE DEPT_ID LIKE 'T%';
 
 -- SP2 지점까지 롤백
 ROLLBACK TO "SP2";
-SELECT * FROM DEPARTMENT2; -- 개발6팀만 롤백
+SELECT * FROM DEPARTMENT2; -- 개발6팀만 삭제(SP2 지점 SAVEPOINT전 개발5팀 있었으므로)
 
 ROLLBACK TO "SP1";
-SELECT * FROM DEPARTMENT2; -- 개발5팀만 롤백
+SELECT * FROM DEPARTMENT2; -- 개발5팀 삭제(SP1 지점 SAVEPOINT 전 개발4팀 있었으므로)
 
 -- 롤백 수행
-ROLLBACK; -- 마지막 커밋 시점(개발 4팀까지 롤백)
+ROLLBACK; -- 개발 4팀까지 삭제(마지막 커밋 시점기준이므로)
 SELECT * FROM DEPARTMENT2; 
 -- 개발1,2,3 팀만 남음
 
