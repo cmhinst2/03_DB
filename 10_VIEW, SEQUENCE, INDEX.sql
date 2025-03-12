@@ -354,6 +354,20 @@ DROP SEQUENCE SEQ_TEST_NO;
  * */
 
 
+SELECT ROWID, EMP_ID, EMP_NAME
+FROM EMPLOYEE;
+-- ROWID : 오라클에서 각 행의 고유한 주소를 나타내는 가상 컬럼(물리적 주소)
+
+/* ROWID 와 INDEX 무슨관계?
+인덱스가 ROWID를 저장함.
+인덱스는 컬럼의 값과 해당 행의 ROWID(물리적 주소)를 매핑해서 저장함.
+즉, 인덱스의 핵심 역할은:
+컬럼 값 → 해당 행의 ROWID 를 빠르게 찾아내는 것!
+*/
+
+
+
+
 -- 현재 사용자(스키마)에 생성된 인덱스 목록 조회
 SELECT INDEX_NAME, TABLE_NAME, UNIQUENESS, STATUS
 FROM USER_INDEXES;
@@ -365,22 +379,24 @@ UNIQUENESS: UNIQUE 여부 (UNIQUE or NONUNIQUE)
 STATUS: VALID(정상) or UNUSABLE(비활성화)
 */
 
+
 -- 인덱스와 관련된 컬럼 정보 조회
 SELECT INDEX_NAME, TABLE_NAME, COLUMN_NAME
 FROM USER_IND_COLUMNS
 WHERE TABLE_NAME = 'EMPLOYEE';
 
 
-
 -- EMPLOYEE 테이블의 EMP_NAME 컬럼에 인덱스 생성
-CREATE INDEX IDX_UNIQUE_NAME
+CREATE INDEX IDX_EMP_NAME
 ON EMPLOYEE (EMP_NAME);
+--> EMPLOYEE 테이블의 EMP_NAME 컬럼에 대해 빠른 검색이 가능
 
 /*
-인덱스명: idx_emp_name
+인덱스명: IDX_EMP_NAME
 테이블명: EMPLOYEE
 컬럼명: EMP_NAME
 목적: EMP_NAME 컬럼 검색 속도 향상
+
 */
 
 -- EMPLOYEE 테이블의 EMAIL 컬럼에 UNIQUE INDEX 생성
