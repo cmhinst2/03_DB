@@ -354,6 +354,46 @@ DROP SEQUENCE SEQ_TEST_NO;
  * */
 
 
+-- 현재 사용자(스키마)에 생성된 인덱스 목록 조회
+SELECT INDEX_NAME, TABLE_NAME, UNIQUENESS, STATUS
+FROM USER_INDEXES;
+
+/*
+INDEX_NAME: 인덱스 이름
+TABLE_NAME: 인덱스가 적용된 테이블
+UNIQUENESS: UNIQUE 여부 (UNIQUE or NONUNIQUE)
+STATUS: VALID(정상) or UNUSABLE(비활성화)
+*/
+
+-- 인덱스와 관련된 컬럼 정보 조회
+SELECT INDEX_NAME, TABLE_NAME, COLUMN_NAME
+FROM USER_IND_COLUMNS
+WHERE TABLE_NAME = 'EMPLOYEE';
+
+
+
+-- EMPLOYEE 테이블의 EMP_NAME 컬럼에 인덱스 생성
+CREATE INDEX IDX_UNIQUE_NAME
+ON EMPLOYEE (EMP_NAME);
+
+/*
+인덱스명: idx_emp_name
+테이블명: EMPLOYEE
+컬럼명: EMP_NAME
+목적: EMP_NAME 컬럼 검색 속도 향상
+*/
+
+-- EMPLOYEE 테이블의 EMAIL 컬럼에 UNIQUE INDEX 생성
+CREATE UNIQUE INDEX IDX_UNIQUE_EMAIL
+ON EMPLOYEE (EMAIL);
+
+/*
+UNIQUE INDEX는 중복 방지
+EMAIL 컬럼에 유일한 값만 허용
+동작: 중복된 EMAIL 삽입 시 오류 발생
+*/
+------------------------------------
+
 /* 인덱스 성능 확인용 테이블 생성 */
 CREATE TABLE TB_IDX_TEST (
 	TEST_NO NUMBER PRIMARY KEY, -- 자동으로 UNIQUE INDEX 생성됨
