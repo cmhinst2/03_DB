@@ -286,7 +286,7 @@ SELECT * FROM TB_TEST;
   [MAXVALUE 숫자 | NOMAXVALUE] -- 발생시킬 최대값 지정 (10의 27승 -1)
   [MINVALUE 숫자 | NOMINVALUE] -- 최소값 지정 (-10의 26승)
   [CYCLE | NOCYCLE] -- 값 순환 여부 지정
-  [CACHE 바이트크기 | NOCACHE] -- 캐쉬메모리 기본값은 20바이트, 최소값은 2바이트
+  [CACHE 바이트크기 | NOCACHE] -- 기본값은 20
  * 
  * */
 
